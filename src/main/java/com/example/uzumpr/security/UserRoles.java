@@ -1,0 +1,26 @@
+package com.example.uzumpr.security;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.uzumpr.security.UserAuthorities.*;
+
+public enum UserRoles {
+    ADMIN(List.of(READ,UPDATE,CREATE)),
+    USER(List.of(READ)),
+    MODERATOR(List.of(READ,CREATE)),
+    SUPER_ADMIN(List.of(READ,CREATE,UPDATE,DELETE));
+
+    UserRoles(List<UserAuthorities> authorities){
+        this.authorities = authorities;
+    }
+    final List<UserAuthorities> authorities;
+
+    public List<String> getAuthorities(){
+        List<String> list = new ArrayList<> (this.authorities.stream()
+                .map(UserAuthorities::getName)
+                .toList());
+        list.add("ROLE_" + this.name());
+        return list;
+    }
+}
